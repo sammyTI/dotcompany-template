@@ -12,11 +12,27 @@ Claude Codeに、フォルダ一個、放り込むだけ。
 
 ## 1分でセットアップ（コピペ1行）
 
-ターミナル（Mac/Linuxの「ターミナル」アプリ、または「iTerm」など）を開いて、自分のプロジェクトのフォルダに移動した状態で、下のコマンドを **コピー → ペースト → Enter** を押すだけです。
+自分のプロジェクトのフォルダに移動した状態で、下のコマンドを **コピー → ペースト → Enter** を押すだけです。
+
+### Mac / Linux
+
+「ターミナル」アプリ（macOS標準）または「iTerm」などで:
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/sammyTI/dotcompany-template/main/install.sh)
 ```
+
+### Windows
+
+「PowerShell」または「Windows Terminal」で:
+
+```powershell
+irm https://raw.githubusercontent.com/sammyTI/dotcompany-template/main/install.ps1 | iex
+```
+
+> 💡 Windows 10 (1803以降) または Windows 11 をお使いください。古いWindowsの場合は WSL（Windows Subsystem for Linux）で Mac/Linux の手順を使ってください。
+
+---
 
 これだけで、
 
@@ -24,7 +40,10 @@ bash <(curl -fsSL https://raw.githubusercontent.com/sammyTI/dotcompany-template/
 2. `/company` スラッシュコマンドがこのプロジェクトで使えるようになります
 3. 次にやるべきこと（プロフィール編集など）が画面に出ます
 
-> 💡 「自分のプロジェクト」がまだない方は、`mkdir my-company && cd my-company` で空のフォルダを作ってから上のコマンドを実行してください。
+> 💡 「自分のプロジェクト」がまだない方は、空のフォルダを作ってから実行してください。
+>
+> - Mac/Linux: `mkdir my-company && cd my-company`
+> - Windows: `mkdir my-company; cd my-company`
 
 ---
 
@@ -178,7 +197,8 @@ npx cc-company-dashboard
 dotcompany-template/
 ├── README.md
 ├── LICENSE
-├── install.sh                         ← ワンライナー導入用
+├── install.sh                         ← ワンライナー導入用（Mac/Linux）
+├── install.ps1                        ← ワンライナー導入用（Windows PowerShell）
 ├── .claude-plugin/
 │   └── marketplace.json               ← プラグイン配布マニフェスト
 ├── plugins/
@@ -247,8 +267,16 @@ dotcompany-template/
 
 ワンライナーで入れた場合は、そのプロジェクトの `.company/` と `.claude/skills/company/` を削除すれば元に戻ります。
 
+Mac / Linux:
+
 ```bash
 rm -rf .company .claude/skills/company
+```
+
+Windows (PowerShell):
+
+```powershell
+Remove-Item -Recurse -Force .company, .claude\skills\company
 ```
 
 プラグインで入れた場合は、Claude Code内で:
