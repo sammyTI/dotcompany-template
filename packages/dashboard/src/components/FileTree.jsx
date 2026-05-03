@@ -33,18 +33,20 @@ export default function FileTree({ data, onNavigate }) {
   );
 }
 
-function TreeNode({ node, depth, onNavigate, parentDept }) {
+function TreeNode({ node, depth, onNavigate, parentDept, parentPath = "" }) {
   const [open, setOpen] = useState(depth <= 2);
 
   // depth 1 = department folder
   const deptId = depth === 1 ? node.name : parentDept;
 
   if (node.type === "file") {
+    // Build path within the department (drop the depth-1 dept name segment)
+    const filePath = parentPath ? `${parentPath}/${node.name}` : node.name;
     return (
       <div
         className="filetree-file filetree-file-clickable"
         style={{ paddingLeft: depth * 20 }}
-        onClick={() => onNavigate && onNavigate("department", deptId)}
+        onClick={() => onNavigate && onNavigate("department", deptId, filePath)}
       >
         <span className="filetree-file-icon">&#9643;</span>
         <span className="filetree-file-name">{node.name}</span>
@@ -52,6 +54,15 @@ function TreeNode({ node, depth, onNavigate, parentDept }) {
       </div>
     );
   }
+
+  // For folder node, build the path-within-department for children.
+  // depth 1 = department folder itself → children's parentPath starts empty
+  // depth >= 2 = subfolder inside department → append to parentPath
+  const childParentPath = depth === 1
+    ? ""
+    : parentPath
+      ? `${parentPath}/${node.name}`
+      : node.name;
 
   return (
     <div className="filetree-folder-wrapper">
@@ -65,7 +76,14 @@ function TreeNode({ node, depth, onNavigate, parentDept }) {
         <span className="filetree-folder-count">{node.fileCount}</span>
       </div>
       {open && node.children && node.children.map((child) => (
-        <TreeNode key={child.name} node={child} depth={depth + 1} onNavigate={onNavigate} parentDept={deptId} />
+        <TreeNode
+          key={child.name}
+          node={child}
+          depth={depth + 1}
+          onNavigate={onNavigate}
+          parentDept={deptId}
+          parentPath={childParentPath}
+        />
       ))}
     </div>
   );

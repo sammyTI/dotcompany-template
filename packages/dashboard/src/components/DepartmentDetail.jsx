@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Markdown from "react-markdown";
 import { fetchDepartment } from "../services/api";
 
-export default function DepartmentDetail({ deptId, onBack }) {
+export default function DepartmentDetail({ deptId, filePath, onBack }) {
   const [dept, setDept] = useState(null);
   const [error, setError] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -17,12 +17,14 @@ export default function DepartmentDetail({ deptId, onBack }) {
     fetchDepartment(deptId)
       .then((data) => {
         setDept(data);
-        if (data.files.length > 0) {
-          selectFile(deptId, data.files[0].path);
-        }
+        // Prefer explicitly requested filePath; fall back to first file
+        const target = filePath && data.files.find((f) => f.path === filePath)
+          ? filePath
+          : (data.files[0] && data.files[0].path);
+        if (target) selectFile(deptId, target);
       })
       .catch(() => setError(true));
-  }, [deptId]);
+  }, [deptId, filePath]);
 
   const selectFile = (dept, filePath) => {
     setSelectedFile(filePath);

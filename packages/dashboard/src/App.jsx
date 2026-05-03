@@ -33,8 +33,14 @@ export default function App() {
 
   useSSE((newData) => setData(newData));
 
-  const navigate = (type, deptId) => {
-    setView(deptId ? { type, deptId } : { type });
+  const navigate = (type, deptId, filePath) => {
+    if (filePath) {
+      setView({ type, deptId, filePath });
+    } else if (deptId) {
+      setView({ type, deptId });
+    } else {
+      setView({ type });
+    }
     setSidebarOpen(false);
   };
 
@@ -72,6 +78,7 @@ export default function App() {
           {view.type === "department" && (
             <DepartmentDetail
               deptId={view.deptId}
+              filePath={view.filePath}
               onBack={() => navigate("dashboard")}
             />
           )}

@@ -9,7 +9,7 @@ export default function Dashboard({ data, onNavigate }) {
       <OverviewCards data={data} />
       <div className="two-col">
         <TodoList data={data} />
-        <ActivityFeed data={data} />
+        <ActivityFeed data={data} onNavigate={onNavigate} />
       </div>
       <DepartmentSummary data={data} onNavigate={onNavigate} />
     </>
