@@ -1,0 +1,25 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+node_modules/
+*.log
+.vscode/
+.idea/
+
+# 配布対象外（実運用データの混入防止）
+.company/secretary/inbox/[0-9]*.md
+.company/secretary/todos/[0-9]*.md
+.company/secretary/notes/[0-9]*.md
+.company/ceo/decisions/[0-9]*.md
+.company/marketing/content-plan/[0-9]*.md
+.company/marketing/campaigns/[0-9]*.md
+.company/engineering/docs/[0-9]*.md
+.company/engineering/debug-log/[0-9]*.md
+.company/finance/invoices/[0-9]*.md
+.company/finance/expenses/[0-9]*.md
+.company/finance/receipts/*.jpg
+.company/finance/receipts/*.png
+.company/finance/receipts/*.heic
+.company/sales/clients/[a-z]*.md
+.company/sales/proposals/[0-9]*.md
