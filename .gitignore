@@ -7,6 +7,9 @@ node_modules/
 .vscode/
 .idea/
 
+# ビルド成果物
+packages/*/dist/
+
 # 配布対象外（実運用データの混入防止）
 .company/secretary/inbox/[0-9]*.md
 .company/secretary/todos/[0-9]*.md

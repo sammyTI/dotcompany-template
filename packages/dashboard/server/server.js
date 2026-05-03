@@ -169,7 +169,7 @@ export function startServer(companyDir, port) {
   });
 
   app.listen(port, () => {
-    console.log(`\n  cc-company dashboard`);
+    console.log(`\n  dotcompany dashboard`);
     console.log(`  http://localhost:${port}\n`);
     console.log(`  Watching: ${companyDir}\n`);
   });

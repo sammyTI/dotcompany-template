@@ -7,7 +7,7 @@ export default function Sidebar({ data, view, onNavigate, open, onClose }) {
       <div className="sidebar-header">
         <div className="logo">
           <span className="logo-dot" />
-          cc-company
+          dotcompany
         </div>
         <button className="menu-close" onClick={onClose}>&times;</button>
       </div>
@@ -64,15 +64,6 @@ export default function Sidebar({ data, view, onNavigate, open, onClose }) {
         ))}
       </div>
 
-      <div className="sidebar-section sidebar-links">
-        <div className="sidebar-section-title">Links</div>
-        <a href="https://shin-sibainu.github.io/cc-company/" target="_blank" rel="noopener" className="sidebar-item sidebar-link">
-          &#9758; Docs
-        </a>
-        <a href="https://github.com/Shin-sibainu/cc-company" target="_blank" rel="noopener" className="sidebar-item sidebar-link">
-          &#9758; GitHub
-        </a>
-      </div>
     </aside>
   );
 }
