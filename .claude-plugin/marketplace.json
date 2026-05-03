@@ -1,0 +1,24 @@
+{
+  "name": "dotcompany-template",
+  "owner": {
+    "name": "sammyTI"
+  },
+  "metadata": {
+    "description": "Claude Codeを会社化する仕組み。6部署フル装備（秘書/CEO/マーケ/開発/経理/営業）の仮想カンパニーを即起動。"
+  },
+  "plugins": [
+    {
+      "name": "company",
+      "source": "./plugins/company",
+      "description": "6部署のAIチームをClaude Codeで雇える。フォルダ一個放り込むだけで秘書が窓口、CEOが振り分け、各部署が稼働。",
+      "version": "1.0.0",
+      "author": {
+        "name": "SAMMY OKAMURA"
+      },
+      "repository": "https://github.com/sammyTI/dotcompany-template",
+      "license": "MIT",
+      "category": "productivity",
+      "tags": ["company", "organization", "secretary", "productivity", "ceo", "6departments"]
+    }
+  ]
+}

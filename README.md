@@ -23,26 +23,48 @@ Claude Codeで「自分専用の仮想カンパニー」を運営するための
 
 ---
 
-## セットアップ（3ステップ）
+## セットアップ
 
-### 1. 自分のプロジェクトに置く
+導入方法は2通り。**Aがおすすめ**（`/company` スラッシュコマンドが使える）。
 
-```bash
-# 既存プロジェクトに導入する場合
-git clone https://github.com/sammyTI/dotcompany-template.git /tmp/dotcompany
-cp -r /tmp/dotcompany/.company /path/to/your/project/
+### A. プラグインとして導入（推奨）
 
-# またはサブモジュールとして
-cd /path/to/your/project
-curl -L https://github.com/sammyTI/dotcompany-template/archive/main.tar.gz | \
-  tar xz --strip-components=1 dotcompany-template-main/.company
+Claude Code内で:
+
+```
+/plugin marketplace add sammyTI/dotcompany-template
+/plugin install company@dotcompany-template
 ```
 
-新規プロジェクトとして始めるなら、このリポジトリ自体をクローンしてそのまま使ってOK。
+その後、`.company/` フォルダを自分のプロジェクトに配置:
 
-### 2. プロフィールを書く
+```bash
+git clone https://github.com/sammyTI/dotcompany-template.git /tmp/dot
+cp -r /tmp/dot/.company /path/to/your/project/
+```
 
-`.company/CLAUDE.md` の **オーナープロフィール** セクションを自分の情報に書き換える。
+プロジェクトで `/company` を実行 → 秘書モード起動。
+
+### B. ドロップイン型（プラグインなし）
+
+プラグイン入れずに使いたい場合:
+
+```bash
+git clone https://github.com/sammyTI/dotcompany-template.git /tmp/dot
+cp -r /tmp/dot/.company /path/to/your/project/
+```
+
+Claude Code起動後にこう言う:
+
+```
+.company/CLAUDE.md を読んで、秘書として動いてください
+```
+
+毎回手動なのが手間ならAを使うべし。
+
+### 共通: プロフィールを書く
+
+どちらの方法でも、`.company/CLAUDE.md` の **オーナープロフィール** セクションを自分の情報に書き換える。
 
 - 名前・役職
 - 事業・活動
@@ -51,15 +73,24 @@ curl -L https://github.com/sammyTI/dotcompany-template/archive/main.tar.gz | \
 
 これで秘書が「あなた専用」になる。
 
-### 3. Claude Codeで起動
+---
 
-そのプロジェクトで Claude Code を開いて、こう言う:
+## ブラウザで可視化（任意）
 
+組織状況をブラウザで一覧したい場合、[cc-company-dashboard](https://github.com/Shin-sibainu/cc-company) が使える（任意の `.company/` で動作）。
+
+```bash
+# プロジェクトで実行（.company/ がある場所）
+npx cc-company-dashboard
 ```
-.company/CLAUDE.md を読んで、秘書として動いてください
-```
 
-以降、何を言っても秘書が窓口になって対応する。
+機能:
+
+- TODO数・Inbox件数・部署アクティビティのカード
+- ファイル階層ツリー
+- Obsidian風グラフビュー
+- 全文検索
+- リアルタイム更新
 
 ---
 
@@ -122,33 +153,42 @@ curl -L https://github.com/sammyTI/dotcompany-template/archive/main.tar.gz | \
 ## ファイル構成
 
 ```
-.company/
-├── CLAUDE.md               ← 組織全体のルール（最初にここを読む）
-├── secretary/
-│   ├── CLAUDE.md           ← 秘書の振る舞い
-│   ├── inbox/              ← クイックメモ
-│   ├── todos/              ← 日次TODO（YYYY-MM-DD.md）
-│   └── notes/              ← 壁打ち・相談ログ
-├── ceo/
-│   ├── CLAUDE.md           ← 振り分けロジック
-│   └── decisions/          ← 意思決定ログ
-├── marketing/
-│   ├── CLAUDE.md
-│   ├── content-plan/       ← 記事・投稿の企画
-│   └── campaigns/          ← キャンペーン管理
-├── engineering/
-│   ├── CLAUDE.md
-│   ├── docs/               ← 技術ドキュメント
-│   └── debug-log/          ← バグ調査ログ
-├── finance/
-│   ├── CLAUDE.md
-│   ├── invoices/           ← 請求書
-│   ├── expenses/           ← 経費
-│   └── receipts/           ← レシート画像（処理前）
-└── sales/
-    ├── CLAUDE.md
-    ├── clients/            ← クライアント情報
-    └── proposals/          ← 提案書
+dotcompany-template/
+├── README.md
+├── LICENSE
+├── .claude-plugin/
+│   └── marketplace.json    ← プラグイン配布用マニフェスト
+├── plugins/
+│   └── company/
+│       ├── .claude-plugin/plugin.json
+│       └── skills/company/SKILL.md   ← /company の振る舞い定義
+└── .company/                   ← ★ ドロップイン本体（プロジェクトに配置）
+    ├── CLAUDE.md               ← 組織全体のルール（最初にここを読む）
+    ├── secretary/
+    │   ├── CLAUDE.md           ← 秘書の振る舞い
+    │   ├── inbox/              ← クイックメモ
+    │   ├── todos/              ← 日次TODO（YYYY-MM-DD.md）
+    │   └── notes/              ← 壁打ち・相談ログ
+    ├── ceo/
+    │   ├── CLAUDE.md           ← 振り分けロジック
+    │   └── decisions/          ← 意思決定ログ
+    ├── marketing/
+    │   ├── CLAUDE.md
+    │   ├── content-plan/       ← 記事・投稿の企画
+    │   └── campaigns/          ← キャンペーン管理
+    ├── engineering/
+    │   ├── CLAUDE.md
+    │   ├── docs/               ← 技術ドキュメント
+    │   └── debug-log/          ← バグ調査ログ
+    ├── finance/
+    │   ├── CLAUDE.md
+    │   ├── invoices/           ← 請求書
+    │   ├── expenses/           ← 経費
+    │   └── receipts/           ← レシート画像（処理前）
+    └── sales/
+        ├── CLAUDE.md
+        ├── clients/            ← クライアント情報
+        └── proposals/          ← 提案書
 ```
 
 各サブフォルダには `_template.md` が入っている。新規作成時はこれをコピーして使う。
