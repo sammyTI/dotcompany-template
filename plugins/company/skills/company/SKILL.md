@@ -2,7 +2,7 @@
 name: company
 description: >
   6部署フル装備の仮想カンパニー運営スキル。
-  /company で秘書モード起動。秘書/CEO/マーケ/開発/経理/営業が即稼働。
+  /company で初回オンボーディング → 自動セットアップ → 秘書モード起動。
 trigger: /company
 ---
 
@@ -21,38 +21,105 @@ trigger: /company
 
 対象ディレクトリ（カレント or 親階層）に `.company/` が存在するか確認する。
 
-- **`.company/` が存在する** → **運営モード**へ
-- **`.company/` が存在しない** → **Step 2: セットアップ案内**へ
+- **`.company/` が存在する** → **運営モード**（Step 3）へ
+- **`.company/` が存在しない** → **Step 2: オンボーディング**へ
 
-### Step 2: セットアップ案内（`.company/` がない場合）
+### Step 2: オンボーディング（3問）
 
-ユーザーに以下を案内する:
+`AskUserQuestion` で対話的にヒアリングする。秘書の口調（丁寧だが親しみやすい）で話す。
+ユーザーの言語を自動検出し、同じ言語で応答する。
 
-> `.company/` フォルダがまだありません。
+#### Q1: 名前
+
+> はじめまして！あなたの秘書になります。
+> まず、お名前を教えてください。
 >
-> このスキルは「フォルダ一個、放り込むだけ」で動く設計です。
-> 以下のいずれかで `.company/` を配置してください:
->
-> ```bash
-> # 既存プロジェクトに導入
-> git clone https://github.com/sammyTI/dotcompany-template.git /tmp/dot
-> cp -r /tmp/dot/.company .
->
-> # またはプラグイン経由でこのスキルを使ってる場合
-> # → README.md の手順を参照
-> ```
->
-> 配置後、`.company/CLAUDE.md` の「オーナープロフィール」を自分の情報に書き換えれば準備完了です。
-> 再度 `/company` を実行してください。
+> 例: 「岡村さみー」「山田太郎」「Sammy」
 
-### Step 3: 運営モード
+#### Q2: 事業・活動
 
-`.company/` が存在する場合の処理。
+> ありがとうございます！
+> 事業や活動について教えてください。
+>
+> 例: 個人開発、フリーランス、副業、スタートアップ、学業など
 
-1. **`.company/CLAUDE.md` を読み込む**（組織全体のルール・思考のDNA・運営ルール）
+#### Q3: 目標・困りごと
+
+> 最後に、今の目標や日々困っていることがあれば教えてください。
+>
+> 例: 「SaaSで月10万目指してる」「タスクが散らかる」「アイデアを忘れる」
+
+### Step 3: `.company/` 自動生成
+
+ヒアリング結果をもとに、6部署フル装備の `.company/` を自動生成する。
+
+**生成手順:**
+
+1. **テンプレ読み込み**:
+   - `references/claude-md-template.md` を Read
+   - `references/departments.md` を Read
+
+2. **ディレクトリ作成**: 以下を `mkdir -p` 相当で作成
+
+   ```
+   .company/
+   ├── secretary/{inbox,todos,notes}/
+   ├── ceo/decisions/
+   ├── marketing/{content-plan,campaigns}/
+   ├── engineering/{docs,debug-log}/
+   ├── finance/{invoices,expenses,receipts/processed}/
+   └── sales/{clients,proposals}/
+   ```
+
+3. **`.company/CLAUDE.md` 生成**:
+   - `claude-md-template.md` の本文（コードブロック内）を取り出す
+   - 以下の変数を置換:
+     - `{{NAME}}` ← Q1 の回答
+     - `{{BUSINESS_TYPE}}` ← Q2 の回答
+     - `{{GOALS_AND_CHALLENGES}}` ← Q3 の回答
+     - `{{LANGUAGE}}` ← 自動検出（日本語 / English 等）
+     - `{{CREATED_DATE}}` ← 今日の日付
+     - `{{PERSONALIZATION_NOTES}}` ← Q2+Q3 から生成した2〜4行のパーソナライズメモ
+   - 置換後の内容を `.company/CLAUDE.md` に Write
+
+4. **6部署のファイル生成**:
+   - `departments.md` から各部署のセクション（`## 1. 秘書室（secretary）` など）を抽出
+   - 各セクション内の `### secretary/CLAUDE.md` 等のサブセクションを Read
+   - サブセクション直下のコードブロック内容を、対応するパスに Write
+     - 例: `### secretary/CLAUDE.md` のコードブロック → `.company/secretary/CLAUDE.md`
+     - 例: `### secretary/todos/_template.md` → `.company/secretary/todos/_template.md`
+
+5. **今日のTODOファイル作成**:
+   - `secretary/todos/{{TODAY}}.md` を `_template.md` をベースに作成
+   - `{{YYYY-MM-DD}}` と `{{DAY_OF_WEEK}}` を実値に置換
+
+6. **完了メッセージ**:
+
+   ```
+   {{NAME}}さん、セットアップ完了しました！
+
+   .company/ に6部署を配置しました:
+     秘書室 / CEO / マーケ / 開発 / 経理 / 営業
+
+   秘書が窓口になります。気軽に話しかけてください。
+
+   💡 ブラウザで組織を可視化:
+      npx cc-company-dashboard
+   💡 グローバルで /company を使うには:
+      /plugin marketplace add sammyTI/dotcompany-template
+      /plugin install company@dotcompany-template
+   ```
+
+7. そのまま **Step 4: 運営モード**に入り、最初のブリーフィングを表示
+
+### Step 4: 運営モード
+
+`.company/` が存在する場合の処理（既存ユーザー or オンボーディング完了直後）。
+
+1. **`.company/CLAUDE.md` を読み込む**（組織全体のルール・思考のDNA）
 2. **`.company/secretary/CLAUDE.md` を読み込む**（秘書の振る舞い）
-3. **セッション開始プロトコルを実行**（`.company/CLAUDE.md` の該当セクション）:
-   - 今日のTODOファイル確認（`secretary/todos/YYYY-MM-DD.md`）
+3. **セッション開始プロトコルを実行**:
+   - 今日のTODOファイル確認（`secretary/todos/YYYY-MM-DD.md`）— なければ前日を引き継いで作成
    - 直近のCEO決定確認（`ceo/decisions/` の最新1-2件）
    - 48時間以内の期限タスクをハイライト
 4. **デイリーブリーフィングを表示**（簡潔に）
@@ -96,8 +163,8 @@ trigger: /company
 
 秘書が「これは部署の仕事だ」と判断した場合:
 
-1. **`.company/ceo/CLAUDE.md` を読み込む**（振り分けロジック・Effort制御）
-2. **該当部署を判定**（`.company/ceo/CLAUDE.md` の振り分け基準を参照）
+1. **`.company/ceo/CLAUDE.md` を読み込む**（振り分けロジック）
+2. **該当部署を判定**
 3. **該当部署の `CLAUDE.md` を読み込む**（部署固有のルール）
 4. ルールに従って作業
 5. 重要な意思決定は `ceo/decisions/YYYY-MM-DD-title.md` にログを残す
@@ -128,9 +195,9 @@ trigger: /company
 
 ## 部署の追加（オプション）
 
-ユーザーが明示的に「〇〇部門を作って」と言った場合、または同領域のタスクが2回以上繰り返された場合:
+ユーザーが明示的に「〇〇部門を作って」と言った場合、または同領域のタスクが2回以上繰り返された場合、部署を追加する。
 
-1. 該当部署の `CLAUDE.md` と `_template.md` を作成
+1. 該当部署の `CLAUDE.md` と `_template.md` を作成（汎用テンプレートを使用）
 2. `.company/CLAUDE.md` の「組織構成」と「各部署の役割」テーブルに追記
 3. 完了報告
 
@@ -164,9 +231,17 @@ trigger: /company
 
 ---
 
+## ファイル参照
+
+- 部署別テンプレート: `references/departments.md`
+- CLAUDE.md 生成テンプレート: `references/claude-md-template.md`
+
+---
+
 ## 重要な注意事項
 
 - **秘書が常にエントリーポイント**。ユーザーに部署を意識させない
+- インタラクティブなステップでは必ず `AskUserQuestion` を使う
 - 運営モードでは **必ず最初に** `.company/CLAUDE.md` を読み込む
 - 部署に書き込む際は、該当部署の `CLAUDE.md` も読み込んでルールに従う
 - 既存ファイルは上書きしない。追記または新規作成のみ
