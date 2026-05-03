@@ -15,14 +15,14 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [theme, setTheme] = useState(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("cc-theme") || "light";
+      return localStorage.getItem("dotcompany-theme") || "dark";
     }
     return "dark";
   });
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("cc-theme", theme);
+    localStorage.setItem("dotcompany-theme", theme);
   }, [theme]);
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
