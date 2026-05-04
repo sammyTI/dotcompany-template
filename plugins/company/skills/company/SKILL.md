@@ -24,7 +24,7 @@ trigger: /company
 - **`.company/` が存在する** → **運営モード**（Step 3）へ
 - **`.company/` が存在しない** → **Step 2: オンボーディング**へ
 
-### Step 2: オンボーディング（3問）
+### Step 2: オンボーディング（4問）
 
 `AskUserQuestion` で対話的にヒアリングする。秘書の口調（丁寧だが親しみやすい）で話す。
 ユーザーの言語を自動検出し、同じ言語で応答する。
@@ -45,9 +45,24 @@ trigger: /company
 
 #### Q3: 目標・困りごと
 
-> 最後に、今の目標や日々困っていることがあれば教えてください。
+> 今の目標や日々困っていることがあれば教えてください。
 >
 > 例: 「SaaSで月10万目指してる」「タスクが散らかる」「アイデアを忘れる」
+
+#### Q4: 連携したいAI・ツール（複数選択 / スキップ可）
+
+> 最後に、Claude Code以外で普段使っているAIツールはありますか？
+> あれば秘書経由で連携を提案します（後で変更できます）。
+>
+> A. **Codex（OpenAI）** — コード実装をオフロード。Codex MCP経由で開発タスクを並列処理
+> B. **Notion** — タスク・案件管理を `.company/` と双方向同期
+> C. **Gmail / カレンダー** — 朝のブリーフィングに未読メール・MTG予定を自動表示
+> D. **Playwright / ブラウザ自動化** — UI動作確認、E2Eテスト、スクレイピング
+> E. **GA4 / アナリティクス** — マーケ部署が定期的にKPI集計
+> F. **特になし / あとで考える**
+
+回答は `{{AI_INTEGRATIONS}}` 配列に格納し、`PERSONALIZATION_NOTES` に反映。
+選ばれた連携は秘書がブリーフィング時に自動提案する仕掛けを `.company/CLAUDE.md` に追加。
 
 ### Step 3: `.company/` 自動生成
 
@@ -77,9 +92,10 @@ trigger: /company
      - `{{NAME}}` ← Q1 の回答
      - `{{BUSINESS_TYPE}}` ← Q2 の回答
      - `{{GOALS_AND_CHALLENGES}}` ← Q3 の回答
+     - `{{AI_INTEGRATIONS}}` ← Q4 の選択肢（カンマ区切り or 「なし」）
      - `{{LANGUAGE}}` ← 自動検出（日本語 / English 等）
      - `{{CREATED_DATE}}` ← 今日の日付
-     - `{{PERSONALIZATION_NOTES}}` ← Q2+Q3 から生成した2〜4行のパーソナライズメモ
+     - `{{PERSONALIZATION_NOTES}}` ← Q2+Q3+Q4 から生成した3〜5行のパーソナライズメモ
    - 置換後の内容を `.company/CLAUDE.md` に Write
 
 4. **6部署のファイル生成**:
