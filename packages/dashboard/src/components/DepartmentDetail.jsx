@@ -101,7 +101,7 @@ export default function DepartmentDetail({ deptId, filePath, onBack }) {
                 <pre className="preview-content">{fileContent}</pre>
               ) : (
                 <div className="preview-rendered">
-                  <Markdown>{stripFrontmatter(fileContent)}</Markdown>
+                  <Markdown urlTransform={transformAssetUrl}>{stripFrontmatter(fileContent)}</Markdown>
                 </div>
               )}
             </>
@@ -152,6 +152,26 @@ function groupByFolder(files) {
 
 function stripFrontmatter(content) {
   return content.replace(/^---\n[\s\S]*?\n---\n*/, "");
+}
+
+// Markdown内の相対パス画像 (image-out/foo.png 等) をダッシュボードのルート絶対パスに書き換える。
+// SPA上ではブラウザが現在URL (/department/...) に対して解決するため、自前で `/` 起点に変換する。
+function transformAssetUrl(url) {
+  if (!url) return url;
+  if (
+    url.startsWith("http://") ||
+    url.startsWith("https://") ||
+    url.startsWith("//") ||
+    url.startsWith("data:") ||
+    url.startsWith("#") ||
+    url.startsWith("mailto:") ||
+    url.startsWith("/")
+  ) {
+    return url;
+  }
+  // ../ をくぐる相対参照は素直に / 起点に正規化（path traversal は express.static 側で防がれる）
+  const normalized = url.replace(/^\.\//, "").replace(/^\.\.\//, "");
+  return `/${normalized}`;
 }
 
 function getStatusBadges(files) {

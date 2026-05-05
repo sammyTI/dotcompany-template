@@ -748,10 +748,33 @@
   padding: 28px 32px;
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.7;
   color: var(--text-secondary);
+}
+
+.preview-rendered img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.preview-rendered table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 12px 0;
+}
+
+.preview-rendered pre {
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .preview-rendered h1 {

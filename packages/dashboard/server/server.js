@@ -79,6 +79,23 @@ export function startServer(companyDir, port) {
     app.use(express.static(distDir));
   }
 
+  // Serve project assets (images etc) referenced from .company/ markdown files.
+  // .company/ lives inside a project root; common asset folders sit at the root.
+  // Mount them so Markdown like ![](image-out/foo.png) can resolve via /_assets/image-out/foo.png.
+  const projectRoot = path.dirname(companyDir);
+  const assetDirs = ["image-out", "images", "public", "assets", "static"];
+  for (const dirName of assetDirs) {
+    const dir = path.join(projectRoot, dirName);
+    if (fs.existsSync(dir) && fs.statSync(dir).isDirectory()) {
+      app.use(`/_assets/${dirName}`, express.static(dir));
+      // Also expose at the bare path so `<img src="image-out/foo.png">` resolved
+      // against site root (after urlTransform) works without rewriting.
+      app.use(`/${dirName}`, express.static(dir));
+    }
+  }
+  // Also serve files inside .company/ itself (e.g. ![](secretary/notes/img.png)).
+  app.use("/_company", express.static(companyDir));
+
   // API endpoints
   app.get("/api/dashboard", (_req, res) => {
     res.json(dashboardData);

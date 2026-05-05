@@ -4,7 +4,7 @@
     "name": "sammyTI"
   },
   "metadata": {
-    "description": "Claude Codeを会社化する仕組み。6部署フル装備（秘書/CEO/マーケ/開発/経理/営業）の仮想カンパニーを即起動。"
+    "description": "Claude Codeを会社化する仕組み。6部署フル装備（秘書/CEO/マーケ/開発/経理/営業）の仮想カンパニーに加え、Anthropic公式 financial-services のエージェント・スキルを丸ごとバンドル。"
   },
   "plugins": [
     {
@@ -12,13 +12,132 @@
       "source": "./plugins/company",
       "description": "6部署のAIチームをClaude Codeで雇える。フォルダ一個放り込むだけで秘書が窓口、CEOが振り分け、各部署が稼働。",
       "version": "1.0.0",
-      "author": {
-        "name": "SAMMY OKAMURA"
-      },
+      "author": { "name": "SAMMY OKAMURA" },
       "repository": "https://github.com/sammyTI/dotcompany-template",
       "license": "MIT",
       "category": "productivity",
       "tags": ["company", "organization", "secretary", "productivity", "ceo", "6departments"]
+    },
+
+    {
+      "name": "pitch-agent",
+      "source": "./plugins/agent-plugins/pitch-agent",
+      "description": "Comps・precedents・LBOから、ブランド付きピッチデックを一気通貫で作成（Anthropic公式）",
+      "category": "agent",
+      "tags": ["pitch", "deck", "presentation", "fsi"]
+    },
+    {
+      "name": "market-researcher",
+      "source": "./plugins/agent-plugins/market-researcher",
+      "description": "セクター/テーマ → 業界概観・競合ランドスケープ・peer comps・アイデアショートリスト（Anthropic公式）",
+      "category": "agent",
+      "tags": ["research", "market", "competitive-analysis", "fsi"]
+    },
+    {
+      "name": "meeting-prep-agent",
+      "source": "./plugins/agent-plugins/meeting-prep-agent",
+      "description": "クライアントミーティング前のブリーフィングパックを自動生成（Anthropic公式）",
+      "category": "agent",
+      "tags": ["meeting", "briefing", "prep", "fsi"]
+    },
+    {
+      "name": "earnings-reviewer",
+      "source": "./plugins/agent-plugins/earnings-reviewer",
+      "description": "決算コール・filing → モデル更新 → ノートドラフト（Anthropic公式）",
+      "category": "agent",
+      "tags": ["earnings", "filings", "review", "fsi"]
+    },
+    {
+      "name": "model-builder",
+      "source": "./plugins/agent-plugins/model-builder",
+      "description": "DCF・LBO・3-statement・comps を Excel 上でライブ構築（Anthropic公式）",
+      "category": "agent",
+      "tags": ["modeling", "dcf", "lbo", "excel", "fsi"]
+    },
+    {
+      "name": "gl-reconciler",
+      "source": "./plugins/agent-plugins/gl-reconciler",
+      "description": "GL差異検出・根本原因追跡・サインオフルーティング（Anthropic公式）",
+      "category": "agent",
+      "tags": ["gl", "reconciliation", "fsi"]
+    },
+    {
+      "name": "month-end-closer",
+      "source": "./plugins/agent-plugins/month-end-closer",
+      "description": "月次決算: 発生主義・ロールフォワード・差異コメンタリー（Anthropic公式）",
+      "category": "agent",
+      "tags": ["month-end", "close", "accruals", "fsi"]
+    },
+    {
+      "name": "valuation-reviewer",
+      "source": "./plugins/agent-plugins/valuation-reviewer",
+      "description": "GPパッケージ取込・バリュエーションテンプレート実行・LP reporting準備（Anthropic公式）",
+      "category": "agent",
+      "tags": ["valuation", "lp-reporting", "fsi"]
+    },
+    {
+      "name": "statement-auditor",
+      "source": "./plugins/agent-plugins/statement-auditor",
+      "description": "LP statement を配布前に監査（Anthropic公式）",
+      "category": "agent",
+      "tags": ["audit", "statement", "fsi"]
+    },
+    {
+      "name": "kyc-screener",
+      "source": "./plugins/agent-plugins/kyc-screener",
+      "description": "オンボーディング書類解析・ルールエンジン実行・ギャップフラグ立て（Anthropic公式）",
+      "category": "agent",
+      "tags": ["kyc", "compliance", "onboarding", "fsi"]
+    },
+
+    {
+      "name": "financial-analysis",
+      "source": "./plugins/vertical-plugins/financial-analysis",
+      "description": "コア財務モデリング: DCF・comps・LBO・3-statement・競合分析・デッキQC（Anthropic公式）",
+      "category": "vertical",
+      "tags": ["financial-analysis", "modeling", "fsi"]
+    },
+    {
+      "name": "investment-banking",
+      "source": "./plugins/vertical-plugins/investment-banking",
+      "description": "投資銀行向け生産性ツール: クライアント/市場インサイト・デッキ作成・財務分析・トランザクション管理（Anthropic公式）",
+      "category": "vertical",
+      "tags": ["investment-banking", "fsi"]
+    },
+    {
+      "name": "equity-research",
+      "source": "./plugins/vertical-plugins/equity-research",
+      "description": "株式リサーチ: 決算分析・Initiating coverage report・リサーチワークフロー（Anthropic公式）",
+      "category": "vertical",
+      "tags": ["equity-research", "fsi"]
+    },
+    {
+      "name": "private-equity",
+      "source": "./plugins/vertical-plugins/private-equity",
+      "description": "PE向けディールソーシング/ワークフロー: 企業発掘・CRM連携・founder outreach（Anthropic公式）",
+      "category": "vertical",
+      "tags": ["private-equity", "deal-sourcing", "fsi"]
+    },
+    {
+      "name": "wealth-management",
+      "source": "./plugins/vertical-plugins/wealth-management",
+      "description": "ウェルスマネジメント/ファイナンシャルアドバイザリ: クライアントレビュー・財務計画・ポートフォリオ分析・レポート（Anthropic公式）",
+      "category": "vertical",
+      "tags": ["wealth-management", "fsi"]
+    },
+    {
+      "name": "fund-admin",
+      "source": "./plugins/vertical-plugins/fund-admin",
+      "description": "ファンド管理/finance ops: GL reconciliation・break tracing・accruals・roll-forwards・variance commentary・NAV tie-out（Anthropic公式）",
+      "category": "vertical",
+      "tags": ["fund-admin", "fsi"]
+    },
+    {
+      "name": "operations",
+      "source": "./plugins/vertical-plugins/operations",
+      "description": "オペレーショナルワークフロー: KYC書類解析・rules-grid評価（Anthropic公式）",
+      "category": "vertical",
+      "tags": ["operations", "kyc", "fsi"]
     }
   ]
 }

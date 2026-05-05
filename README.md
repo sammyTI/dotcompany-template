@@ -1,11 +1,13 @@
 # dotcompany-template
 
-Claude Code で 6部署の仮想カンパニーを運営するプラグインです。
+Claude Code で 6部署の仮想カンパニーを運営するプラグイン **+ Anthropic公式 financial-services エージェント丸ごとバンドル** です。
 
 **[ドキュメント](https://github.com/sammyTI/dotcompany-template)**
 
 `/company` を実行すると、秘書があなた専用の窓口になります。3問のヒアリングで即運用開始。
 6部署（秘書 / CEO / マーケ / 開発 / 経理 / 営業）が最初から揃います。
+
+加えて、Anthropic公式の **Pitch Agent / Market Researcher / Meeting Prep Agent / Month-End Closer** など 17個のエージェント・スキルプラグインを同梱しています（Apache 2.0、帰属表記済み）。ピッチデック、競合調査、決算レビュー、月次決算などをそのまま使えます。
 
 ## インストール
 
@@ -14,6 +16,15 @@ Claude Code 内で、以下を順に実行してください。
 ```
 /plugin marketplace add sammyTI/dotcompany-template
 /plugin install company@dotcompany-template
+```
+
+追加でAnthropicの財務系エージェントを使いたい場合（任意）:
+
+```
+/plugin install pitch-agent@dotcompany-template
+/plugin install market-researcher@dotcompany-template
+/plugin install meeting-prep-agent@dotcompany-template
+/plugin install month-end-closer@dotcompany-template
 ```
 
 その後、自分のプロジェクトで:
@@ -141,10 +152,40 @@ npx cc-company-dashboard
 
 `.company/` フォルダは残ります（手動で削除してください）。
 
+## バンドルされている Anthropic 公式エージェント
+
+`plugins/agent-plugins/` `plugins/vertical-plugins/` `managed-agent-cookbooks/` は [anthropics/financial-services](https://github.com/anthropics/financial-services) からの vendored コピー（Apache 2.0）です。
+
+### Agent plugins（10個）
+
+| Plugin | 用途 |
+|---|---|
+| `pitch-agent` | comps・precedents・LBO → ブランド付きピッチデック |
+| `market-researcher` | セクター/テーマ → 業界概観・競合・peer comps |
+| `meeting-prep-agent` | クライアント面談前のブリーフィングパック |
+| `earnings-reviewer` | 決算コール+filing → モデル更新 → ノート |
+| `model-builder` | DCF/LBO/3-statement/comps を Excel上で構築 |
+| `gl-reconciler` | GL差異検出・根本原因追跡 |
+| `month-end-closer` | 月次決算・accruals・variance commentary |
+| `valuation-reviewer` | GPパッケージ → バリュエーション → LP reporting |
+| `statement-auditor` | LP statement の事前監査 |
+| `kyc-screener` | オンボーディング書類解析・ルール評価 |
+
+### Vertical plugins（7個・スキル単体配布）
+
+`financial-analysis` / `investment-banking` / `equity-research` / `private-equity` / `wealth-management` / `fund-admin` / `operations`
+
+スキル単体（`/dcf` `/comps` `/earnings` 等）だけ欲しい場合は vertical のほうを入れる。
+
+⚠️ Anthropic原文の免責事項: これらは投資・法律・税務・会計のアドバイスではありません。アナリスト作業のドラフト生成用で、最終的な判断は資格を持つ専門家のレビューが必要です。詳細は `NOTICE` ファイル参照。
+
 ## ライセンス
 
-MIT
+- 自作部分（`plugins/company/` ほか）: **MIT**
+- バンドル部分（`plugins/agent-plugins/`、`plugins/vertical-plugins/`、`managed-agent-cookbooks/`）: **Apache 2.0**（`plugins/LICENSE-APACHE` 参照）
 
 ## 元ネタ
 
-[Shin-sibainu/cc-company](https://github.com/Shin-sibainu) のコンセプトを参考に、6部署フル装備版として再構成しました。ダッシュボードも同氏の cc-company-dashboard を fork しています。
+- 6部署仮想カンパニーのコンセプト: [Shin-sibainu/cc-company](https://github.com/Shin-sibainu)
+- ダッシュボード: 同氏の cc-company-dashboard を fork
+- Agent / Vertical plugins: [anthropics/financial-services](https://github.com/anthropics/financial-services)
