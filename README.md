@@ -9,16 +9,52 @@ Claude Code で 6部署の仮想カンパニーを運営するプラグイン **
 
 加えて、Anthropic公式の **Pitch Agent / Market Researcher / Meeting Prep Agent / Month-End Closer** など 17個のエージェント・スキルプラグインを同梱しています（Apache 2.0、帰属表記済み）。ピッチデック、競合調査、決算レビュー、月次決算などをそのまま使えます。
 
-## インストール
+## セットアップ（30秒で完了）
 
-Claude Code 内で、以下を順に実行してください。
+### Step 1. プラグインを追加
+
+Claude Code を起動して、以下を順に実行してください。
 
 ```
 /plugin marketplace add sammyTI/dotcompany-template
+```
+
+```
 /plugin install company@dotcompany-template
 ```
 
-追加でAnthropicの財務系エージェントを使いたい場合（任意）:
+### Step 2. プロジェクトで `/company` を実行
+
+自分のプロジェクトのフォルダで Claude Code を開いて、以下を入力。
+
+```
+/company
+```
+
+### Step 3. 4問のヒアリングに答える
+
+秘書から4問だけ質問されます。
+
+1. お名前
+2. 事業や活動
+3. 目標・困りごと
+4. 連携したいAIツール（複数選択 / スキップ可）
+
+回答後、`.company/` フォルダが自動で作られて、6部署が即稼働します。
+
+### Step 4（任意）. ブラウザで組織を可視化
+
+別ターミナルから、`.company/` のあるプロジェクトで:
+
+```bash
+npx dotcompany-dashboard
+```
+
+ブラウザが自動で開いて、TODO・部署アクティビティ・ファイルツリー・グラフビューが見られます。
+
+### Step 5（任意）. Anthropic公式の財務系エージェントも使う
+
+ピッチデック作成、競合調査、決算レビュー、月次決算などをそのまま使いたい場合:
 
 ```
 /plugin install pitch-agent@dotcompany-template
@@ -27,13 +63,7 @@ Claude Code 内で、以下を順に実行してください。
 /plugin install month-end-closer@dotcompany-template
 ```
 
-その後、自分のプロジェクトで:
-
-```
-/company
-```
-
-これだけで、4問のヒアリングのあと `.company/` が自動生成されます。
+10個のAgent plugins と 7個の Vertical plugins が用意されています。詳細は下の「バンドルされている Anthropic 公式エージェント」を参照。
 
 ## コンセプト
 
@@ -139,18 +169,6 @@ Claude Code 内で、以下を順に実行してください。
     ├── clients/
     └── proposals/
 ```
-
-## ブラウザで可視化（任意）
-
-組織状況をブラウザで確認したい場合:
-
-```bash
-npx dotcompany-dashboard
-```
-
-機能: TODO数・部署アクティビティ・ファイル階層ツリー・Obsidian風グラフビュー・全文検索・リアルタイム更新
-
-`.company/` フォルダがあるディレクトリで実行してください。ダークモード既定。
 
 ## アンインストール
 
