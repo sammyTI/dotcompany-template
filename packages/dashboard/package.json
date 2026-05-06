@@ -1,8 +1,8 @@
 {
   "name": "dotcompany-dashboard",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
-  "description": "Dashboard for dotcompany-template virtual organization (forked from cc-company-dashboard)",
+  "description": "Browser dashboard for dotcompany-template — visualize the 6-department virtual organization in your .company/ folder",
   "bin": {
     "dotcompany-dashboard": "./bin/cli.js"
   },

@@ -150,7 +150,7 @@ npx dotcompany-dashboard
 
 機能: TODO数・部署アクティビティ・ファイル階層ツリー・Obsidian風グラフビュー・全文検索・リアルタイム更新
 
-[Shin-sibainu/cc-company-dashboard](https://github.com/Shin-sibainu) を fork した dotcompany 用リブランド版（ダークモード既定）です。`.company/` フォルダがあるディレクトリで実行してください。
+`.company/` フォルダがあるディレクトリで実行してください。ダークモード既定。
 
 ## アンインストール
 
@@ -193,8 +193,6 @@ npx dotcompany-dashboard
 - 自作部分（`plugins/company/` ほか）: **MIT**
 - バンドル部分（`plugins/agent-plugins/`、`plugins/vertical-plugins/`、`managed-agent-cookbooks/`）: **Apache 2.0**（`plugins/LICENSE-APACHE` 参照）
 
-## 元ネタ
+## クレジット
 
-- 6部署仮想カンパニーのコンセプト: [Shin-sibainu/cc-company](https://github.com/Shin-sibainu)
-- ダッシュボード: 同氏の cc-company-dashboard を fork
-- Agent / Vertical plugins: [anthropics/financial-services](https://github.com/anthropics/financial-services)
+- Agent / Vertical plugins: [anthropics/financial-services](https://github.com/anthropics/financial-services)（Apache 2.0）

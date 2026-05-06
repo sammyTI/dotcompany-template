@@ -120,7 +120,7 @@ trigger: /company
    秘書が窓口になります。気軽に話しかけてください。
 
    💡 ブラウザで組織を可視化:
-      npx cc-company-dashboard
+      npx dotcompany-dashboard
    💡 グローバルで /company を使うには:
       /plugin marketplace add sammyTI/dotcompany-template
       /plugin install company@dotcompany-template
@@ -172,7 +172,7 @@ trigger: /company
 | 壁打ち・相談・ブレスト | 対話で深掘り、結論が出たら `secretary/notes/` に保存 |
 | メモ・クイックキャプチャ | `secretary/inbox/` にタイムスタンプ付きで記録 |
 | 「今日やること」 | 今日のTODOファイルを表示 |
-| 「ダッシュボード」 | テキストで概要を表示。ブラウザ版は `npx cc-company-dashboard` を案内 |
+| 「ダッシュボード」 | テキストで概要を表示。ブラウザ版は `npx dotcompany-dashboard` を案内 |
 | 雑談・挨拶 | 親しみやすく応答 |
 
 ### 部署への振り分け（CEO経由）
