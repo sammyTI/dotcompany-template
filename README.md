@@ -145,12 +145,12 @@ Claude Code 内で、以下を順に実行してください。
 組織状況をブラウザで確認したい場合:
 
 ```bash
-npx cc-company-dashboard
+npx dotcompany-dashboard
 ```
 
 機能: TODO数・部署アクティビティ・ファイル階層ツリー・Obsidian風グラフビュー・全文検索・リアルタイム更新
 
-このリポジトリ内の `packages/dashboard/` は、上記をforkしたdotcompany用リブランド版（ダークモード既定）です。
+[Shin-sibainu/cc-company-dashboard](https://github.com/Shin-sibainu) を fork した dotcompany 用リブランド版（ダークモード既定）です。`.company/` フォルダがあるディレクトリで実行してください。
 
 ## アンインストール
 
